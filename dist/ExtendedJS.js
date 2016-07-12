@@ -9,7 +9,7 @@
  * @copyright 2016 Avrora Team www.avrora.team
  * @license   MIT
  * @tutorial  http://extendedjs.avrora.team
- * @version   1.0.0
+ * @version   1.0.1
  */
 
 !function()
@@ -50,9 +50,11 @@
     /**
      *  Attaches one or more space-separated event handlers for element
      *
-     *  @param {String}   [selector] The CSS selector of elements on which will attach event handler
-     *  @param {String}   events     Single event or space-separated list of events on which will attach handler
-     *  @param {Function} handler    Event handler
+     *  @param {String}   [selector]      The CSS selector of elements on which will attach event handler
+     *  @param {String}   events          Single event or space-separated list of events on which will attach handler
+     *  @param {Function} handler         Event handler
+     *  @param {Boolean}  [capture=false] If sets to true, the event handler is executed in the capturing phase.
+     *                                    By default event handler is executed in the bubbling phase
      */
     EventTarget.prototype.addEvent = Window.prototype.addEvent = function()
     {
@@ -60,33 +62,36 @@
             return console.error('ExtendedJS: Invalid amount of arguments. Method addEvent needs minimum 2 arguments.');
         }
 
-        var selector = arguments.length < 3 ? null : arguments[0],
-            events   = arguments[arguments.length < 3 ? 0 : 1].split(/\s+/),
-            callback = arguments[arguments.length < 3 ? 1 : 2];
+        var args = Array.prototype.slice.call(arguments, 0, 4);
+        typeof args[1] === 'function' && args.unshift(null);
+        typeof args[3] === 'undefined' && (args[3] = false);
+        args[1] = args[1].split(/\s+/);
 
-        if (typeof callback !== 'function') {
+        if (typeof args[2] !== 'function') {
             return console.error('ExtendedJS: Invalid callback function.');
         }
 
-        for (var i = events.length; i--;) {
-            this.addEventListener(events[i], function(e)
+        for (var i = args[1].length; i--; ) {
+            this.addEventListener(args[1][i], function(e)
             {
-                if (selector) {
-                    for (var element = e.target; element && element !== this && !element.matches(selector); element = element.parentNode);
-                    element !== this && callback.call(element, e);
+                if (args[0]) {
+                    for (var element = e.target; element && element !== this && !element.matches(args[0]); element = element.parentNode);
+                    element && element !== this && args[2].call(element, e);
                 } else {
-                    callback.call(this, e);
+                    args[2].call(this, e);
                 }
-            });
+            }, args[3]);
         }
     };
 
     /**
      *  Attaches one or more space-separated event handlers for element which will be executed only one time
      *
-     *  @param {String}   [selector] The CSS selector of elements on which will attach event handler
-     *  @param {String}   events     Single event or space-separated list of events on which will attach handler
-     *  @param {Function} handler    Event handler
+     *  @param {String}   [selector]      The CSS selector of elements on which will attach event handler
+     *  @param {String}   events          Single event or space-separated list of events on which will attach handler
+     *  @param {Function} handler         Event handler
+     *  @param {Boolean}  [capture=false] If sets to true, the event handler is executed in the capturing phase.
+     *                                    By default event handler is executed in the bubbling phase
      */
     EventTarget.prototype.addEventOne = Window.prototype.addEventOne = function()
     {
@@ -94,27 +99,33 @@
             return console.error('ExtendedJS: Invalid amount of arguments. Method addEventOne needs minimum 2 arguments.');
         }
 
-        var selector = arguments.length < 3 ? null : arguments[0],
-            event    = arguments[arguments.length < 3 ? 0 : 1],
-            callback = arguments[arguments.length < 3 ? 1 : 2];
+        var args = Array.prototype.slice.call(arguments, 0, 4);
+        typeof args[1] === 'function' && args.unshift(null);
+        typeof args[3] === 'undefined' && (args[3] = false);
+        args[1] = args[1].split(/\s+/);
 
-        if (typeof callback !== 'function') {
+        if (typeof args[2] !== 'function') {
             return console.error('ExtendedJS: Invalid callback function.');
         }
 
-        var activatedElements = [];
-        this.addEventListener(event, function(e)
-        {
-            var element = this;
-            if (selector) {
-                for (element = e.target; element && element !== this && !element.matches(selector); element = element.parentNode);
-                if (element === this) {
-                    return;
-                }
-            }
+        for (var i = args[1].length; i--; ) {
+            !function(self, event)
+            {
+                var activatedElements = [];
+                self.addEventListener(event, function(e)
+                {
+                    var element = this;
+                    if (args[0]) {
+                        for (element = e.target; element && element !== this && !element.matches(args[0]); element = element.parentNode);
+                        if (!element || element === this) {
+                            return;
+                        }
+                    }
 
-            activatedElements.indexOf(element) < 0 && activatedElements.push(element) && callback.call(element, e);
-        });
+                    activatedElements.indexOf(element) < 0 && activatedElements.push(element) && args[2].call(element, e);
+                }, args[3]);
+            } (this, args[1][i]);
+        }
     };
 
     /**
@@ -136,9 +147,11 @@
     /**
      *  Attaches one or more space-separated event handlers for each element of the node list
      *
-     *  @param {String}    [selector] The CSS selector of elements on which will attach event handler
-     *  @param {String}    events     Single event or space-separated list of events on which will attach handler
-     *  @param {Function}  handler    Event handler
+     *  @param {String}    [selector]     The CSS selector of elements on which will attach event handler
+     *  @param {String}    events         Single event or space-separated list of events on which will attach handler
+     *  @param {Function}  handler        Event handler
+     *  @param {Boolean}  [capture=false] If sets to true, the event handler is executed in the capturing phase.
+     *                                    By default event handler is executed in the bubbling phase
      */
     NodeList.prototype.addEvent = HTMLCollection.prototype.addEvent = function()
     {
@@ -152,9 +165,11 @@
     /**
      *  Attaches one or more space-separated event handlers which will be executed only one time for each element of the node list
      *
-     *  @param {String}   [selector] The CSS selector of elements on which will attach event handler
-     *  @param {String}   events     Single event or space-separated list of events on which will attach handler
-     *  @param {Function} handler    Event handler
+     *  @param {String}   [selector]      The CSS selector of elements on which will attach event handler
+     *  @param {String}   events          Single event or space-separated list of events on which will attach handler
+     *  @param {Function} handler         Event handler
+     *  @param {Boolean}  [capture=false] If sets to true, the event handler is executed in the capturing phase.
+     *                                    By default event handler is executed in the bubbling phase
      */
     NodeList.prototype.addEventOne = HTMLCollection.prototype.addEventOne = function()
     {
@@ -268,6 +283,7 @@
     if (!element.classList.contains('b')) {
         var originalAdd    = DOMTokenList.prototype.add,
             originalRemove = DOMTokenList.prototype.remove;
+
         DOMTokenList.prototype.add = function(a)
         {
             Array.prototype.forEach.call(arguments, originalAdd.bind(this));
@@ -680,7 +696,8 @@
                 var callbackName = 'jsonp_callback_' + Math.round(1e6 * Math.random()),
                     script       = document.createElement('script');
 
-                window[callbackName] = function(data) {
+                window[callbackName] = function(data)
+                {
                     delete window[callbackName];
                     document.body.removeChild(script);
                     P.success(data);
