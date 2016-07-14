@@ -516,7 +516,7 @@
         data        : {},            // object with request data or FormData
         headers     : {},            // object with headers
         async       : true,          // if true executes request asynchronously
-        cache       : true,          // true for enable caching of request response. Doesn't work jsonp request
+        cache       : false,         // true for enable caching of request response. Doesn't work jsonp request
         cacheMaxAge : 300,           // expires time of response cache in seconds. Default 5 minutes
         jsonp       : false,         // true for jsonp request
         uri         : '',            // request uri
@@ -742,8 +742,10 @@
 
                 if (typeof ajaxCache[P.cache] === 'object' && ajaxCache[P.cache].expires > new Date()) {
                     status = 'cache';
+                    var response = ajaxCache[P.cache].response;
+                    response instanceof Element && (response = response.cloneNode(true).children);
                     P.beforeSend.call(xhr);
-                    P.success.call(xhr, ajaxCache[P.cache].response, status);
+                    P.success.call(xhr, response, status);
                     P.complete.call(xhr, status);
                     return true;
                 }
@@ -769,12 +771,13 @@
                             var el = document.createElement('div');
                             el.innerHTML = response;
                             response = el.children;
+                            var cacheResponse = el.cloneNode(true);
                         }
                     }
 
                     status === 'success' ? P.success.call(xhr, response, status) : P.error.call(xhr, status);
                     status === 'success' && P.cache && (ajaxCache[P.cache] = {
-                        response: response,
+                        response: cacheResponse || response,
                         expires : Date.now() + P.cacheMaxAge * 1e3
                     });
                     P.complete.call(xhr, status);
