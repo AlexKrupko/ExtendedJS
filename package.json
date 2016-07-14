@@ -2,8 +2,8 @@
   "name": "ExtendedJS",
   "title": "ExtendedJS",
   "description": "Small library which extend basic functionality of JavaScript",
-  "version": "1.0.2",
-  "homepage": "https://extendedjs.avrora.team",
+  "version": "1.0.3",
+  "homepage": "http://extendedjs.avrora.team",
   "repository": {
     "type": "git",
     "url": "https://github.com/AvroraTeam/ExtendedJS"

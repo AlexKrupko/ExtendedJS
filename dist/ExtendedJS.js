@@ -9,7 +9,7 @@
  * @copyright 2016 Avrora Team www.avrora.team
  * @license   MIT
  * @tutorial  http://extendedjs.avrora.team
- * @version   1.0.2
+ * @version   1.0.3
  */
 
 !function()
@@ -485,10 +485,10 @@
     /**
      *  Inserts the specified node after the reference node as a child of the current node
      *
-     *  @param {Element} newElement
-     *  @param {Node}    referenceElement
+     *  @param {Node} newElement
+     *  @param {Node} referenceElement
      */
-    Element.prototype.insertAfter = function(newElement, referenceElement)
+    Node.prototype.insertAfter = function(newElement, referenceElement)
     {
         referenceElement = referenceElement.next();
         referenceElement ? this.insertBefore(newElement, referenceElement) : this.appendChild(newElement);
@@ -497,9 +497,9 @@
     /**
      *  Inserts the specified node as first child node of the current node
      *
-     *  @param {Element} element
+     *  @param {Node} element
      */
-    Element.prototype.prependChild = function(element)
+    Node.prototype.prependChild = function(element)
     {
         this.firstChild ? this.insertBefore(element, this.firstChild) : this.appendChild(element);
     };
@@ -507,9 +507,9 @@
     /**
      *  Inserts the specified node before current node
      *
-     *  @param {Element} element
+     *  @param {Node} element
      */
-    Element.prototype.insertBeforeCurrent = function(element)
+    Node.prototype.insertBeforeCurrent = function(element)
     {
         this.parentNode.insertBefore(element, this);
     };
@@ -517,9 +517,9 @@
     /**
      *  Inserts the specified node after current node
      *
-     *  @param {Element} element
+     *  @param {Node} element
      */
-    Element.prototype.insertAfterCurrent = function(element)
+    Node.prototype.insertAfterCurrent = function(element)
     {
         this.parentNode.insertAfter(element, this);
     };

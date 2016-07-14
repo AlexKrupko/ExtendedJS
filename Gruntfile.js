@@ -64,14 +64,6 @@ module.exports = function (grunt)
                 files: ['./src/*.js'],
                 tasks: ['build']
             }
-        },
-
-        release: {
-            options: {
-                npmtag: false,
-                tagName: 'v<%= version %>',
-                afterRelease: ['build']
-            }
         }
 
     });
