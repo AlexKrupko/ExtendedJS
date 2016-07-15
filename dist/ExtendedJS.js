@@ -9,7 +9,7 @@
  * @copyright 2016 Avrora Team www.avrora.team
  * @license   MIT
  * @tutorial  http://extendedjs.avrora.team
- * @version   1.0.3
+ * @version   1.0.4
  */
 
 !function()
@@ -772,7 +772,7 @@
                     var response = xhr.responseText;
                     status = 'error';
 
-                    if (xhr.status === 200) {
+                    if (xhr.status >= 200 && xhr.status < 300) {
                         status = 'success';
 
                         if (P.dataType.toLowerCase() === 'json') {

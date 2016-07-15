@@ -758,7 +758,7 @@
                     var response = xhr.responseText;
                     status = 'error';
 
-                    if (xhr.status === 200) {
+                    if (xhr.status >= 200 && xhr.status < 300) {
                         status = 'success';
 
                         if (P.dataType.toLowerCase() === 'json') {
