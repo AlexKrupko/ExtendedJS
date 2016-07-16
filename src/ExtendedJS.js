@@ -634,10 +634,11 @@
         /**
          *  Scrolls page to passed position by Y axis with animation duration
          *
-         *  @param {Number} scroll       Scroll position by Y axis
-         *  @param {Number} [duration=0] Animation duration
+         *  @param {Number}   scroll       Scroll position by Y axis
+         *  @param {Number}   [duration=0] Animation duration
+         *  @param {Function} [callback]   Callback function which will be called after scroll ending
          */
-        scroll: function(scroll, duration)
+        scroll: function(scroll, duration, callback)
         {
             duration = duration || 0;
 
@@ -648,7 +649,7 @@
             function step()
             {
                 window.scrollTo(0, window.scrollY + stepScroll);
-                ++currentStep < steps && setTimeout(step, duration / steps);
+                ++currentStep < steps ? setTimeout(step, duration / steps) : (typeof callback === 'function' && callback());
             }
             step();
         },
