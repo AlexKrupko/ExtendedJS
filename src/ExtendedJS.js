@@ -210,6 +210,54 @@
     };
 
     /**
+     * Adds outerHeight, fullOuterHeight, outerWidth and fullOuterWidth properties to Element
+     */
+    Object.defineProperties(Element.prototype, {
+
+        /**
+         *  Returns element's height including padding and border sizes
+         */
+        outerHeight: {
+            get: function()
+            {
+                return this.getBoundingClientRect().height;
+            }
+        },
+
+        /**
+         *  Returns element's height including padding, border and margin sizes
+         */
+        fullOuterHeight: {
+            get: function()
+            {
+                var cs = getComputedStyle(this);
+                return this.getBoundingClientRect().height + parseFloat(cs.getPropertyValue('margin-top')) + parseFloat(cs.getPropertyValue('margin-bottom'));
+            }
+        },
+
+        /**
+         *  Returns element's width including padding and border sizes
+         */
+        outerWidth: {
+            get: function()
+            {
+                return this.getBoundingClientRect().width;
+            }
+        },
+
+        /**
+         *  Returns element's width including padding, border and margin sizes
+         */
+        fullOuterWidth: {
+            get: function()
+            {
+                var cs = getComputedStyle(this);
+                return this.getBoundingClientRect().width + parseFloat(cs.getPropertyValue('margin-left')) + parseFloat(cs.getPropertyValue('margin-right'));
+            }
+        }
+    });
+
+    /**
      *  Returns true if element contains all of passed class names, else returns false
      *
      *  @param  {...String} className
