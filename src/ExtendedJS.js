@@ -199,6 +199,7 @@
      *  Element index passes in callback function as first parameter
      *
      *  @param {Function} callback Function which will call for each element of list
+     *  @retrun {NodeList|HTMLCollection}
      */
     NodeList.prototype.each = HTMLCollection.prototype.each = function(callback)
     {
@@ -207,6 +208,8 @@
         }
 
         for (var i = 0; i < this.length; callback.call(this[i], i++));
+
+        return this;
     };
 
     /**
@@ -379,15 +382,17 @@
         this.each(Element.prototype.remove);
     };
 
+    /**
+     * Finds elements by data-exjs-element attribute and returns this collection
+     *
+     * @return {NodeList}
+     */
     function getExjsElements()
     {
-        var elements = document.querySelectorAll('[data-exjs-element]');
-        elements.each(function()
+        return this.querySelectorAll('[data-exjs-element]').each(function()
         {
             delete this.dataset.exjsElement;
         });
-
-        return elements;
     }
 
     /**
@@ -418,7 +423,7 @@
     {
         for (var el = this; el = el.parentElement; (!selector || el.matches(selector)) && (el.dataset.exjsElement = 1));
 
-        return getExjsElements();
+        return getExjsElements.call(document);
     };
 
     /**
@@ -449,7 +454,7 @@
     {
         for (var el = this; el = el.nextElementSibling; (!selector || el.matches(selector)) && (el.dataset.exjsElement = 1));
 
-        return getExjsElements();
+        return getExjsElements.call(this.parentNode || document);
     };
 
     /**
@@ -480,7 +485,7 @@
     {
         for (var el = this; el = el.previousElementSibling; (!selector || el.matches(selector)) && (el.dataset.exjsElement = 1));
 
-        return getExjsElements();
+        return getExjsElements.call(this.parentNode || document);
     };
 
     /**
@@ -497,7 +502,7 @@
             (!selector || this.matches(selector)) && (this.dataset.exjsElement = 1);
         });
 
-        return getExjsElements();
+        return getExjsElements.call(this);
     };
 
     /**
@@ -513,7 +518,7 @@
             this.matches(selector) && (this.dataset.exjsElement = 1);
         });
 
-        return getExjsElements();
+        return getExjsElements.call(document); // TODO: not worked for not inserted into DOM elements (issue #26)
     };
 
     /**
