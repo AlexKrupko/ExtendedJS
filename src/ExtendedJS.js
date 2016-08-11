@@ -693,6 +693,7 @@
          */
         scroll: function(scroll, duration, callback)
         {
+            scroll = Math.round(scroll);
             duration = duration || 0;
 
             var steps       = duration > 0 ? Math.ceil(duration / 1000 * 30) : 1,
@@ -701,8 +702,8 @@
 
             function step()
             {
-                window.scrollTo(0, window.scrollY + stepScroll);
-                ++currentStep < steps ? setTimeout(step, duration / steps) : (typeof callback === 'function' && callback());
+                window.scrollTo(0, ++currentStep >= steps ? scroll : window.scrollY + stepScroll);
+                currentStep < steps ? setTimeout(step, duration / steps) : (typeof callback === 'function' && callback());
             }
             step();
         },
