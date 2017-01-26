@@ -33,10 +33,11 @@ module.exports = function (grunt)
             js     : {
                 files: [{
                     expand: true,
-                    cwd   : './src',
+                    cwd   : './dist',
                     src   : '*.js',
                     dest  : './dist',
-                    ext   : '.min.js'
+                    ext   : '.min.js',
+                    extDot: 'last'
                 }]
             }
         },
@@ -53,9 +54,21 @@ module.exports = function (grunt)
                     expand: true,
                     cwd   : './src',
                     src   : '*.js',
-                    dest  : './dist',
-                    ext   : '.js'
+                    dest  : './dist'
                 }]
+            }
+        },
+
+        babel: {
+            options: {
+                presets: ['es2015-script'],
+                plugins: ['transform-strict-mode']
+            },
+            files: {
+                expand: true,
+                cwd   : './dist',
+                src   : '*.js',
+                dest  : './dist'
             }
         },
 
@@ -68,7 +81,7 @@ module.exports = function (grunt)
 
     });
 
-    grunt.registerTask('build', ['clean', 'copy', 'uglify']);
+    grunt.registerTask('build', ['clean', 'copy', 'babel', 'uglify']);
     grunt.registerTask('default', ['watch']);
     
 };

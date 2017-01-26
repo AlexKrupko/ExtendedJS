@@ -2,7 +2,7 @@
   "name": "ExtendedJS",
   "title": "ExtendedJS",
   "description": "Small library which extend basic functionality of JavaScript",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "homepage": "http://extendedjs.avrora.team",
   "repository": {
     "type": "git",
@@ -28,7 +28,10 @@
   ],
   "license": "MIT",
   "devDependencies": {
+    "babel-plugin-transform-strict-mode": "^6.22.0",
+    "babel-preset-es2015-script": "^1.1.0",
     "grunt": "^1.0.1",
+    "grunt-babel": "^6.0.0",
     "grunt-contrib-clean": "^1.0.0",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-uglify": "^1.0.1",
