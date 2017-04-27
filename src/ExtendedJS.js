@@ -576,6 +576,17 @@
         return index >= 0;
     };
 
+    /**
+     * Escapes special characters in passed string
+     *
+     * @param {String} string
+     * @return {String}
+     */
+    RegExp.escape = function(string)
+    {
+        return string.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+    };
+
 
     var ajaxDefaults = {
         method      : 'GET',         // request method

@@ -14,7 +14,7 @@
  * @copyright 2016 Avrora Team www.avrora.team
  * @license   MIT
  * @tutorial  http://extendedjs.avrora.team
- * @version   1.0.8.lite
+ * @version   1.0.9.lite
  */
 
 !function () {
@@ -499,5 +499,15 @@
         index >= 0 && this.splice(index, 1);
 
         return index >= 0;
+    };
+
+    /**
+     * Escapes special characters in passed string
+     *
+     * @param {String} string
+     * @return {String}
+     */
+    RegExp.escape = function (string) {
+        return string.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
     };
 }();
