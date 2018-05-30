@@ -8,8 +8,11 @@ Since 1.0.8 version the library exists lite version also without some functional
 ### How to install
 You need to include library javascript file from `dist` directory on your page
 ```html
-<link rel="stylesheet" href="dist/css/DatePickerX.min.css">
-<script src="dist/js/DatePickerX.min.js"></script>
+for full version
+<script src="dist/ExtendedJS.min.js"></script>
+
+or for lite version
+<script src="dist/ExtendedJS.lite.min.js"></script>
 ``` 
 
 ### Library methods and properties
