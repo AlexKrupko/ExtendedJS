@@ -6,11 +6,10 @@ module.exports = function (grunt)
     var comment = '/**\n\
  * ExtendedJS\n\
  *\n\
- * Small library which extend basic functionality of JavaScript\n\
+ * Small useful library for extending basic functionality of JavaScript\n\
  * Chrome 45+, FireFox 40+, Safari 8+, IE10+, iOS Safari 8+, Android Browser 4.4+\n\
  *\n\
- * @author    Alexander Krupko <sanych.zp@gmail.com>\n\
- * @author    Slava Krasnyansky <krasnyansky.v@gmail.com>\n\
+ * @author    Alexander Krupko <alex@avrora.team>\n\
  * @copyright 2016 Avrora Team www.avrora.team\n\
  * @license   MIT\n\
  * @tutorial  http://extendedjs.avrora.team\n\
